@@ -40,7 +40,6 @@
 
         .container { max-width: 760px; margin: 0 auto; padding: 0 20px; width: 100%; }
 
-        /* ── HEADER ── */
         .calc-header {
             background: var(--primary); text-align: center;
             padding: 20px 16px 18px; color: #fff; flex-shrink: 0;
@@ -61,7 +60,6 @@
         .intro h2 { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
         .intro p { font-size: 0.9rem; color: var(--gray); max-width: 500px; margin: 0 auto; }
 
-        /* ── SECTIONS ── */
         .section { background: #fff; margin-bottom: 6px; border-bottom: 1px solid var(--light-gray); }
         .section-header {
             display: flex; align-items: center; justify-content: space-between;
@@ -131,7 +129,6 @@
         .services-fixed .lock { color: var(--accent); flex-shrink: 0; margin-top: 2px; font-size: 14px; }
         .services-fixed strong { font-weight: 600; color: var(--primary); }
 
-        /* ── FORM BLOCK (отдельный, всегда видно) ── */
         .form-block {
             background: #fff;
             border: 1px solid var(--light-gray);
@@ -165,7 +162,6 @@
         }
         .form-error.show { display: block; }
 
-        /* ── BOTTOM BAR ── */
         .bottom-bar {
             position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
             border-top: 1px solid var(--light-gray); padding: 12px 20px;
@@ -195,7 +191,6 @@
         .btn-block { width: 100%; justify-content: center; }
         .btn:disabled { opacity: 0.6; pointer-events: none; }
 
-        /* ── RESULT ── */
         .result-card {
             display: none; background: #fff; border: 1px solid var(--light-gray);
             padding: 28px 22px 24px; text-align: center; margin: 16px 0;
@@ -393,7 +388,7 @@
                 </div>
             </div>
 
-            <!-- ========== БЛОК С ФОРМОЙ (всегда видно) ========== -->
+            <!-- Блок с формой -->
             <div class="form-block" id="form-block">
                 <div class="form-block-label">Ваши данные для расчёта</div>
                 <div class="form-block-sublabel">Заполните поля ниже и нажмите «Рассчитать». Смета появится здесь же.</div>
@@ -406,7 +401,7 @@
                 <button class="btn btn-block" id="btn-submit" onclick="calculateAndSend()">Рассчитать и отправить заявку</button>
             </div>
 
-            <!-- ========== РЕЗУЛЬТАТ ========== -->
+            <!-- Результат -->
             <div class="result-card" id="result-card">
                 <div class="result-badge">Смета рассчитана</div>
                 <div class="result-price" id="result-price">0 ₽</div>
@@ -496,24 +491,103 @@
 
         function buildSummary() {
             const lines = [];
+
+            // Кухня
+            const kitchenItems = [];
             const u = document.querySelector('input[name="kitchen-unit"]:checked');
-            let kc = (u && u.value !== 'none') ? 1 : 0;
-            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(() => kc++);
-            if (kc > 0) lines.push('<strong>Кухня:</strong> ' + kc + ' позиц.');
-            document.querySelectorAll('.bedroom-block').forEach((b, i) => {
-                if (b.style.display !== 'none') { const n = b.querySelectorAll('input:checked').length; if (n > 0) lines.push('<strong>Спальня ' + (i+1) + ':</strong> ' + n + ' позиц.'); }
+            if (u && u.value !== 'none') {
+                kitchenItems.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой');
+            }
+            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => {
+                kitchenItems.push(cb.parentElement.textContent.trim());
             });
-            let tc = document.querySelectorAll('#sec-appliances input:checked').length;
-            if (tc > 0) lines.push('<strong>Техника:</strong> ' + tc + ' позиц.');
-            if (document.getElementById('chk-hallway').checked) lines.push('<strong>Прихожая:</strong> комплект');
+            if (kitchenItems.length > 0) {
+                lines.push('<strong>Кухня:</strong> ' + kitchenItems.join(', '));
+            }
+
+            // Спальни
+            document.querySelectorAll('.bedroom-block').forEach((b, i) => {
+                if (b.style.display !== 'none') {
+                    const items = [];
+                    b.querySelectorAll('input:checked').forEach(cb => {
+                        items.push(cb.parentElement.textContent.trim());
+                    });
+                    if (items.length > 0) {
+                        lines.push('<strong>Спальня ' + (i + 1) + ':</strong> ' + items.join(', '));
+                    }
+                }
+            });
+
+            // Техника
+            const techItems = [];
+            document.querySelectorAll('#sec-appliances input:checked').forEach(cb => {
+                techItems.push(cb.parentElement.textContent.trim());
+            });
+            if (techItems.length > 0) {
+                lines.push('<strong>Техника:</strong> ' + techItems.join(', '));
+            }
+
+            // Прихожая
+            if (document.getElementById('chk-hallway').checked) {
+                lines.push('<strong>Прихожая:</strong> готовый комплект');
+            }
+
+            // Свет
             const lq = parseInt(document.getElementById('light-value').value) || 0;
-            if (lq > 0) lines.push('<strong>Свет:</strong> ' + lq + ' точ.');
+            if (lq > 0) {
+                lines.push('<strong>Свет:</strong> ' + lq + ' точ.');
+            }
+
             lines.push('<strong>Услуги под ключ:</strong> включены');
             return lines.join('<br>');
         }
 
         function buildSummaryText() {
-            return buildSummary().replace(/<[^>]*>/g, ', ').replace(/, +/g, ', ').replace(/^, /, '').replace(/, $/, '');
+            const lines = [];
+
+            const kitchenItems = [];
+            const u = document.querySelector('input[name="kitchen-unit"]:checked');
+            if (u && u.value !== 'none') {
+                kitchenItems.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой');
+            }
+            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => {
+                kitchenItems.push(cb.parentElement.textContent.trim());
+            });
+            if (kitchenItems.length > 0) {
+                lines.push('Кухня: ' + kitchenItems.join(', '));
+            }
+
+            document.querySelectorAll('.bedroom-block').forEach((b, i) => {
+                if (b.style.display !== 'none') {
+                    const items = [];
+                    b.querySelectorAll('input:checked').forEach(cb => {
+                        items.push(cb.parentElement.textContent.trim());
+                    });
+                    if (items.length > 0) {
+                        lines.push('Спальня ' + (i + 1) + ': ' + items.join(', '));
+                    }
+                }
+            });
+
+            const techItems = [];
+            document.querySelectorAll('#sec-appliances input:checked').forEach(cb => {
+                techItems.push(cb.parentElement.textContent.trim());
+            });
+            if (techItems.length > 0) {
+                lines.push('Техника: ' + techItems.join(', '));
+            }
+
+            if (document.getElementById('chk-hallway').checked) {
+                lines.push('Прихожая: готовый комплект');
+            }
+
+            const lq = parseInt(document.getElementById('light-value').value) || 0;
+            if (lq > 0) {
+                lines.push('Свет: ' + lq + ' точ.');
+            }
+
+            lines.push('Услуги под ключ: включены');
+            return lines.join('; ');
         }
 
         async function calculateAndSend() {
@@ -530,7 +604,6 @@
             const summary = buildSummary();
             const summaryText = buildSummaryText();
 
-            // Показываем результат
             document.getElementById('result-price').textContent = total.toLocaleString('ru-RU') + ' ₽';
             document.getElementById('result-summary').innerHTML = summary;
             document.getElementById('result-card').classList.add('show');
@@ -539,11 +612,9 @@
             document.getElementById('bottom-bar').style.display = 'none';
             document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // Блокируем секции
             document.querySelectorAll('.section-body input, .section-body button').forEach(el => el.disabled = true);
             document.querySelectorAll('.section').forEach(el => el.classList.add('disabled-area'));
 
-            // Отправка
             btn.textContent = 'Отправка...';
             btn.disabled = true;
 

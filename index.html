@@ -464,27 +464,27 @@
         function buildSummary() {
             const lines = [];
             const kitchenItems = [];
-            const u = document.querySelector('input[name="kitchen-unit"]:checked');
+            const u = document.querySelector('input[name="kitchen-unit"]:checked");
             if (u && u.value !== 'none') kitchenItems.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой');
             document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => kitchenItems.push(cb.parentElement.textContent.trim()));
             const chairs = parseInt(document.getElementById('chair-count').value) || 0;
             if (chairs > 0) kitchenItems.push('Стулья ' + chairs + ' шт');
-            if (kitchenItems.length > 0) lines.push('Кухня: ' + kitchenItems.join(', '));
+            if (kitchenItems.length > 0) lines.push('🍳 Кухня: ' + kitchenItems.join(', '));
             ['bedroom-block-1', 'bedroom-block-2'].forEach((id, i) => {
                 const block = document.getElementById(id);
                 if (block && block.style.display !== 'none') {
                     const items = [];
                     block.querySelectorAll('input:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
-                    if (items.length > 0) lines.push('Спальня ' + (i+1) + ': ' + items.join(', '));
+                    if (items.length > 0) lines.push('🛏️ Спальня ' + (i+1) + ': ' + items.join(', '));
                 }
             });
             const techItems = [];
             document.querySelectorAll('#sec-appliances input:checked').forEach(cb => techItems.push(cb.parentElement.textContent.trim()));
-            if (techItems.length > 0) lines.push('Техника: ' + techItems.join(', '));
-            if (document.getElementById('chk-hallway').checked) lines.push('Прихожая: готовый комплект');
+            if (techItems.length > 0) lines.push('📺 Техника: ' + techItems.join(', '));
+            if (document.getElementById('chk-hallway').checked) lines.push('🚪 Прихожая: готовый комплект');
             const lq = parseInt(document.getElementById('light-value').value) || 0;
-            if (lq > 0) lines.push('Свет: ' + lq + ' точ.');
-            lines.push('Услуги под ключ: включены');
+            if (lq > 0) lines.push('💡 Свет: ' + lq + ' точ.');
+            lines.push('🔧 Услуги под ключ: включены');
             return lines.join('\n');
         }
 

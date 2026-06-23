@@ -121,6 +121,17 @@
         .number-row span { font-size: 16px; font-weight: 700; min-width: 22px; text-align: center; color: var(--primary); }
         .number-row .hint { font-size: 12px; color: var(--gray); }
 
+        .number-input-inline {
+            display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+        }
+        .number-input-inline input {
+            width: 60px; padding: 6px 8px; border: 2px solid var(--light-gray);
+            font-size: 14px; font-family: 'Inter', sans-serif; text-align: center;
+            background: var(--light); transition: var(--transition); color: var(--dark); border-radius: var(--radius);
+        }
+        .number-input-inline input:focus { outline: none; border-color: var(--accent); background: #fff; }
+        .number-input-inline .hint { font-size: 12px; color: var(--gray); }
+
         .services-fixed {
             background: #f4f6f5; border-left: 3px solid var(--accent);
             padding: 10px 14px; display: flex; align-items: flex-start; gap: 10px;
@@ -130,24 +141,11 @@
         .services-fixed strong { font-weight: 600; color: var(--primary); }
 
         .form-block {
-            background: #fff;
-            border: 1px solid var(--light-gray);
-            border-radius: var(--radius);
-            padding: 22px 20px;
-            margin: 20px 0 12px;
+            background: #fff; border: 1px solid var(--light-gray);
+            border-radius: var(--radius); padding: 22px 20px; margin: 20px 0 12px;
         }
-        .form-block-label {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 4px;
-            font-family: 'Raleway', sans-serif;
-        }
-        .form-block-sublabel {
-            font-size: 12px;
-            color: var(--gray);
-            margin-bottom: 16px;
-        }
+        .form-block-label { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 4px; font-family: 'Raleway', sans-serif; }
+        .form-block-sublabel { font-size: 12px; color: var(--gray); margin-bottom: 16px; }
         .form-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
         .form-row input {
             padding: 11px 12px; border: 2px solid var(--light-gray); font-size: 14px;
@@ -156,10 +154,7 @@
         }
         .form-row input:focus { outline: none; border-color: var(--accent); background: #fff; }
         .form-row input::placeholder { color: #aaa; }
-        .form-error {
-            color: #c0392b; font-size: 11.5px; text-align: left;
-            display: none; font-weight: 500; margin-bottom: 8px;
-        }
+        .form-error { color: #c0392b; font-size: 11.5px; text-align: left; display: none; font-weight: 500; margin-bottom: 8px; }
         .form-error.show { display: block; }
 
         .bottom-bar {
@@ -219,10 +214,7 @@
         }
         .result-phone a { color: var(--primary); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--accent); transition: var(--transition); }
         .result-phone a:hover { color: var(--accent); border-bottom-color: var(--primary); }
-        .success-msg {
-            display: none; text-align: center; padding: 16px 0 8px;
-            color: var(--primary-light); font-weight: 600; font-size: 14px;
-        }
+        .success-msg { display: none; text-align: center; padding: 16px 0 8px; color: var(--primary-light); font-weight: 600; font-size: 14px; }
         .success-msg.show { display: block; }
         .success-msg i { color: var(--accent); font-size: 28px; display: block; margin-bottom: 8px; }
 
@@ -276,8 +268,11 @@
                         <span class="option-group-label">Дополнительные позиции</span>
                         <label class="option"><input type="checkbox" data-price="30000"> Антресоли на кухне (в потолок)</label>
                         <label class="option"><input type="checkbox" data-price="15000"> Стол обеденный</label>
-                        <label class="option"><input type="checkbox" data-price="7000"> Стул мягкий 2 шт</label>
-                        <label class="option"><input type="checkbox" data-price="14000"> Стул мягкий 4 шт</label>
+                        <div class="number-input-inline">
+                            <span style="font-size:13px;">Стулья (кол-во):</span>
+                            <input type="number" id="chair-count" value="0" min="0" max="20" onchange="updateAllBadges()">
+                            <span class="hint">× 3 500 ₽/шт</span>
+                        </div>
                         <label class="option"><input type="checkbox" data-price="25000"> Диван</label>
                         <label class="option"><input type="checkbox" data-price="35000"> Диван-кровать</label>
                         <label class="option"><input type="checkbox" data-price="8500"> Карниз / тюль / шторы</label>
@@ -388,7 +383,7 @@
                 </div>
             </div>
 
-            <!-- Блок с формой -->
+            <!-- Форма -->
             <div class="form-block" id="form-block">
                 <div class="form-block-label">Ваши данные для расчёта</div>
                 <div class="form-block-sublabel">Заполните поля ниже и нажмите «Рассчитать». Смета появится здесь же.</div>
@@ -431,6 +426,7 @@
 
     <script>
         const SERVICES_PRICE = 200000;
+        const CHAIR_PRICE = 3500;
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYZnOnUPN2hIudKjgX82xnYp9anOarFgE5DxKya1Zs4uzf0vtmgYeLCPSs7SK4c--A/exec';
 
         function toggleSection(id) { document.getElementById(id).classList.toggle('open'); }
@@ -458,7 +454,7 @@
         function updateAllBadges() {
             updateBadge('badge-kitchen', () => {
                 const u = document.querySelector('input[name="kitchen-unit"]:checked');
-                return (u && u.value !== 'none') || !!document.querySelector('#sec-kitchen input[type="checkbox"]:checked');
+                return (u && u.value !== 'none') || !!document.querySelector('#sec-kitchen input[type="checkbox"]:checked') || (parseInt(document.getElementById('chair-count').value) || 0) > 0;
             });
             updateBadge('badge-bedrooms', () => {
                 let n = 0;
@@ -480,6 +476,8 @@
             const u = document.querySelector('input[name="kitchen-unit"]:checked');
             if (u && u.value !== 'none') t += parseInt(u.dataset.price) || 0;
             document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(c => t += parseInt(c.dataset.price) || 0);
+            const chairs = parseInt(document.getElementById('chair-count').value) || 0;
+            t += chairs * CHAIR_PRICE;
             document.querySelectorAll('.bedroom-block').forEach(b => {
                 if (b.style.display !== 'none') b.querySelectorAll('input:checked').forEach(c => t += parseInt(c.dataset.price) || 0);
             });
@@ -489,105 +487,46 @@
             return t;
         }
 
-        function buildSummary() {
-            const lines = [];
-
-            // Кухня
-            const kitchenItems = [];
+        function getKitchenItems() {
+            const items = [];
             const u = document.querySelector('input[name="kitchen-unit"]:checked');
-            if (u && u.value !== 'none') {
-                kitchenItems.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой');
-            }
-            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => {
-                kitchenItems.push(cb.parentElement.textContent.trim());
-            });
-            if (kitchenItems.length > 0) {
-                lines.push('<strong>Кухня:</strong> ' + kitchenItems.join(', '));
-            }
-
-            // Спальни
-            document.querySelectorAll('.bedroom-block').forEach((b, i) => {
-                if (b.style.display !== 'none') {
-                    const items = [];
-                    b.querySelectorAll('input:checked').forEach(cb => {
-                        items.push(cb.parentElement.textContent.trim());
-                    });
-                    if (items.length > 0) {
-                        lines.push('<strong>Спальня ' + (i + 1) + ':</strong> ' + items.join(', '));
-                    }
-                }
-            });
-
-            // Техника
-            const techItems = [];
-            document.querySelectorAll('#sec-appliances input:checked').forEach(cb => {
-                techItems.push(cb.parentElement.textContent.trim());
-            });
-            if (techItems.length > 0) {
-                lines.push('<strong>Техника:</strong> ' + techItems.join(', '));
-            }
-
-            // Прихожая
-            if (document.getElementById('chk-hallway').checked) {
-                lines.push('<strong>Прихожая:</strong> готовый комплект');
-            }
-
-            // Свет
-            const lq = parseInt(document.getElementById('light-value').value) || 0;
-            if (lq > 0) {
-                lines.push('<strong>Свет:</strong> ' + lq + ' точ.');
-            }
-
-            lines.push('<strong>Услуги под ключ:</strong> включены');
-            return lines.join('<br>');
+            if (u && u.value !== 'none') items.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой');
+            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
+            const chairs = parseInt(document.getElementById('chair-count').value) || 0;
+            if (chairs > 0) items.push('Стулья: ' + chairs + ' шт');
+            return items;
         }
 
-        function buildSummaryText() {
+        function getBedroomItems(blockId) {
+            const items = [];
+            const block = document.getElementById(blockId);
+            if (block && block.style.display !== 'none') {
+                block.querySelectorAll('input:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
+            }
+            return items;
+        }
+
+        function getTechItems() {
+            const items = [];
+            document.querySelectorAll('#sec-appliances input:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
+            return items;
+        }
+
+        function buildSummary() {
             const lines = [];
-
-            const kitchenItems = [];
-            const u = document.querySelector('input[name="kitchen-unit"]:checked');
-            if (u && u.value !== 'none') {
-                kitchenItems.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой');
-            }
-            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => {
-                kitchenItems.push(cb.parentElement.textContent.trim());
+            const kitchenItems = getKitchenItems();
+            if (kitchenItems.length > 0) lines.push('<strong>Кухня:</strong> ' + kitchenItems.join(', '));
+            ['bedroom-block-1', 'bedroom-block-2'].forEach((id, i) => {
+                const items = getBedroomItems(id);
+                if (items.length > 0) lines.push('<strong>Спальня ' + (i+1) + ':</strong> ' + items.join(', '));
             });
-            if (kitchenItems.length > 0) {
-                lines.push('Кухня: ' + kitchenItems.join(', '));
-            }
-
-            document.querySelectorAll('.bedroom-block').forEach((b, i) => {
-                if (b.style.display !== 'none') {
-                    const items = [];
-                    b.querySelectorAll('input:checked').forEach(cb => {
-                        items.push(cb.parentElement.textContent.trim());
-                    });
-                    if (items.length > 0) {
-                        lines.push('Спальня ' + (i + 1) + ': ' + items.join(', '));
-                    }
-                }
-            });
-
-            const techItems = [];
-            document.querySelectorAll('#sec-appliances input:checked').forEach(cb => {
-                techItems.push(cb.parentElement.textContent.trim());
-            });
-            if (techItems.length > 0) {
-                lines.push('Техника: ' + techItems.join(', '));
-            }
-
-            if (document.getElementById('chk-hallway').checked) {
-                lines.push('Прихожая: готовый комплект');
-            }
-
+            const techItems = getTechItems();
+            if (techItems.length > 0) lines.push('<strong>Техника:</strong> ' + techItems.join(', '));
+            if (document.getElementById('chk-hallway').checked) lines.push('<strong>Прихожая:</strong> готовый комплект');
             const lq = parseInt(document.getElementById('light-value').value) || 0;
-            if (lq > 0) {
-                lines.push('Свет: ' + lq + ' точ.');
-            }
-
-            lines.push('Услуги под ключ: включены');
-            return lines.join('; ');
+            if (lq > 0) lines.push('<strong>Свет:</strong> ' + lq + ' точ.');
+            lines.push('<strong>Услуги под ключ:</strong> включены');
+            return lines.join('<br>');
         }
 
         async function calculateAndSend() {
@@ -602,7 +541,6 @@
 
             const total = calculateTotal();
             const summary = buildSummary();
-            const summaryText = buildSummaryText();
 
             document.getElementById('result-price').textContent = total.toLocaleString('ru-RU') + ' ₽';
             document.getElementById('result-summary').innerHTML = summary;
@@ -623,7 +561,13 @@
             payload.append('phone', phone);
             payload.append('email', email);
             payload.append('total', total);
-            payload.append('summary', summaryText);
+            payload.append('kitchen', getKitchenItems().join(', ') || '—');
+            payload.append('bedroom1', getBedroomItems('bedroom-block-1').join(', ') || '—');
+            payload.append('bedroom2', getBedroomItems('bedroom-block-2').join(', ') || '—');
+            payload.append('appliances', getTechItems().join(', ') || '—');
+            payload.append('hallway', document.getElementById('chk-hallway').checked ? 'Готовый комплект' : '—');
+            payload.append('light', (parseInt(document.getElementById('light-value').value) || 0).toString());
+            payload.append('services', 'Включены');
             payload.append('date', new Date().toLocaleString('ru-RU'));
 
             try { await fetch(SCRIPT_URL, { method: 'POST', body: payload, mode: 'no-cors' }); } catch (e) { console.error(e); }
@@ -643,6 +587,7 @@
             document.querySelector('input[name="bedroom-count"][value="0"]').checked = true;
             document.getElementById('light-value').value = '0';
             document.getElementById('light-count').textContent = '0';
+            document.getElementById('chair-count').value = '0';
             ['input-name', 'input-phone', 'input-email'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('form-error').classList.remove('show');
             document.getElementById('success-msg').classList.remove('show');

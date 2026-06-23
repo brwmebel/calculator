@@ -40,6 +40,7 @@
 
         .container { max-width: 760px; margin: 0 auto; padding: 0 20px; width: 100%; }
 
+        /* ── HEADER ── */
         .calc-header {
             background: var(--primary); text-align: center;
             padding: 20px 16px 18px; color: #fff; flex-shrink: 0;
@@ -60,6 +61,7 @@
         .intro h2 { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
         .intro p { font-size: 0.9rem; color: var(--gray); max-width: 500px; margin: 0 auto; }
 
+        /* ── SECTIONS ── */
         .section { background: #fff; margin-bottom: 6px; border-bottom: 1px solid var(--light-gray); }
         .section-header {
             display: flex; align-items: center; justify-content: space-between;
@@ -129,6 +131,41 @@
         .services-fixed .lock { color: var(--accent); flex-shrink: 0; margin-top: 2px; font-size: 14px; }
         .services-fixed strong { font-weight: 600; color: var(--primary); }
 
+        /* ── FORM BLOCK (отдельный, всегда видно) ── */
+        .form-block {
+            background: #fff;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--radius);
+            padding: 22px 20px;
+            margin: 20px 0 12px;
+        }
+        .form-block-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+            font-family: 'Raleway', sans-serif;
+        }
+        .form-block-sublabel {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 16px;
+        }
+        .form-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+        .form-row input {
+            padding: 11px 12px; border: 2px solid var(--light-gray); font-size: 14px;
+            font-family: 'Inter', sans-serif; background: var(--light);
+            transition: var(--transition); color: var(--dark); border-radius: var(--radius);
+        }
+        .form-row input:focus { outline: none; border-color: var(--accent); background: #fff; }
+        .form-row input::placeholder { color: #aaa; }
+        .form-error {
+            color: #c0392b; font-size: 11.5px; text-align: left;
+            display: none; font-weight: 500; margin-bottom: 8px;
+        }
+        .form-error.show { display: block; }
+
+        /* ── BOTTOM BAR ── */
         .bottom-bar {
             position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
             border-top: 1px solid var(--light-gray); padding: 12px 20px;
@@ -158,6 +195,7 @@
         .btn-block { width: 100%; justify-content: center; }
         .btn:disabled { opacity: 0.6; pointer-events: none; }
 
+        /* ── RESULT ── */
         .result-card {
             display: none; background: #fff; border: 1px solid var(--light-gray);
             padding: 28px 22px 24px; text-align: center; margin: 16px 0;
@@ -186,17 +224,6 @@
         }
         .result-phone a { color: var(--primary); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--accent); transition: var(--transition); }
         .result-phone a:hover { color: var(--accent); border-bottom-color: var(--primary); }
-
-        .lead-form { display: flex; flex-direction: column; gap: 9px; max-width: 360px; margin: 0 auto 14px; }
-        .lead-form input {
-            padding: 10px 12px; border: 2px solid var(--light-gray); font-size: 13.5px;
-            font-family: 'Inter', sans-serif; background: var(--light);
-            transition: var(--transition); color: var(--dark); border-radius: var(--radius);
-        }
-        .lead-form input:focus { outline: none; border-color: var(--accent); background: #fff; }
-        .lead-form input::placeholder { color: #aaa; }
-        .error-msg { color: #c0392b; font-size: 11.5px; text-align: left; display: none; font-weight: 500; }
-        .error-msg.show { display: block; }
         .success-msg {
             display: none; text-align: center; padding: 16px 0 8px;
             color: var(--primary-light); font-weight: 600; font-size: 14px;
@@ -234,7 +261,7 @@
 
             <div class="intro">
                 <h2>Рассчитайте стоимость меблировки</h2>
-                <p>Отметьте нужные позиции в разделах ниже — получите итоговую сумму. Услуги сборки и монтажа уже включены.</p>
+                <p>Отметьте нужные позиции в разделах ниже. Услуги сборки и монтажа уже включены в смету.</p>
             </div>
 
             <!-- Кухня -->
@@ -366,31 +393,32 @@
                 </div>
             </div>
 
-            <!-- ========== РЕЗУЛЬТАТ + ФОРМА ========== -->
+            <!-- ========== БЛОК С ФОРМОЙ (всегда видно) ========== -->
+            <div class="form-block" id="form-block">
+                <div class="form-block-label">Ваши данные для расчёта</div>
+                <div class="form-block-sublabel">Заполните поля ниже и нажмите «Рассчитать». Смета появится здесь же.</div>
+                <div class="form-row">
+                    <input type="text" id="input-name" placeholder="Ваше имя *" required autocomplete="name">
+                    <input type="tel" id="input-phone" placeholder="Телефон *" required autocomplete="tel">
+                    <input type="email" id="input-email" placeholder="Email (необязательно)" autocomplete="email">
+                </div>
+                <div class="form-error" id="form-error">Пожалуйста, заполните имя и телефон</div>
+                <button class="btn btn-block" id="btn-submit" onclick="calculateAndSend()">Рассчитать и отправить заявку</button>
+            </div>
+
+            <!-- ========== РЕЗУЛЬТАТ ========== -->
             <div class="result-card" id="result-card">
                 <div class="result-badge">Смета рассчитана</div>
                 <div class="result-price" id="result-price">0 ₽</div>
                 <div class="result-summary" id="result-summary"></div>
-                <div class="result-phone">
-                    По вопросам звоните: <a href="tel:+78129258856">+7 (812) 925 88-56</a><br>
-                    <span style="font-size:11px;">Компания «Мебель и Стиль»</span>
-                </div>
-
-                <!-- ФОРМА ВВОДА ДАННЫХ -->
-                <div class="lead-form" id="lead-form">
-                    <input type="text" id="input-name" placeholder="Ваше имя *" required autocomplete="name">
-                    <input type="tel" id="input-phone" placeholder="Телефон *" required autocomplete="tel">
-                    <input type="email" id="input-email" placeholder="Email (необязательно)" autocomplete="email">
-                    <span class="error-msg" id="error-msg">Пожалуйста, заполните обязательные поля</span>
-                    <button class="btn btn-block" id="btn-submit" onclick="calculateAndSend()">Рассчитать и отправить заявку</button>
-                </div>
-
-                <!-- СООБЩЕНИЕ ОБ УСПЕХЕ -->
                 <div class="success-msg" id="success-msg">
                     <i class="fas fa-check-circle"></i>
                     Заявка отправлена!<br><small>Мы свяжемся с вами в ближайшее время.</small>
                 </div>
-
+                <div class="result-phone">
+                    По вопросам звоните: <a href="tel:+78129258856">+7 (812) 925 88-56</a><br>
+                    <span style="font-size:11px;">Компания «Мебель и Стиль»</span>
+                </div>
                 <button class="btn btn-outline btn-block" onclick="resetAll()">Пересчитать заново</button>
             </div>
 
@@ -402,15 +430,13 @@
     </footer>
 
     <div class="bottom-bar" id="bottom-bar">
-        <span class="hint-text">Заполните разделы выше</span>
-        <button class="btn" onclick="scrollToResult()">К расчёту <i class="fas fa-chevron-down"></i></button>
+        <span class="hint-text">Заполните разделы и форму выше</span>
+        <button class="btn" onclick="scrollToForm()">К расчёту <i class="fas fa-chevron-down"></i></button>
     </div>
 
     <script>
-        // ═══════════════ НАСТРОЙКИ ═══════════════
         const SERVICES_PRICE = 200000;
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYZnOnUPN2hIudKjgX82xnYp9anOarFgE5DxKya1Zs4uzf0vtmgYeLCPSs7SK4c--A/exec';
-        // ══════════════════════════════════════════
 
         function toggleSection(id) { document.getElementById(id).classList.toggle('open'); }
 
@@ -494,7 +520,7 @@
             const name = document.getElementById('input-name').value.trim();
             const phone = document.getElementById('input-phone').value.trim();
             const email = document.getElementById('input-email').value.trim();
-            const err = document.getElementById('error-msg');
+            const err = document.getElementById('form-error');
             const btn = document.getElementById('btn-submit');
 
             if (!name || !phone) { err.classList.add('show'); return; }
@@ -509,12 +535,13 @@
             document.getElementById('result-summary').innerHTML = summary;
             document.getElementById('result-card').classList.add('show');
             document.getElementById('calc-footer').classList.add('show');
+            document.getElementById('form-block').style.display = 'none';
+            document.getElementById('bottom-bar').style.display = 'none';
             document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // Блокируем изменения
+            // Блокируем секции
             document.querySelectorAll('.section-body input, .section-body button').forEach(el => el.disabled = true);
             document.querySelectorAll('.section').forEach(el => el.classList.add('disabled-area'));
-            document.getElementById('bottom-bar').style.display = 'none';
 
             // Отправка
             btn.textContent = 'Отправка...';
@@ -528,22 +555,14 @@
             payload.append('summary', summaryText);
             payload.append('date', new Date().toLocaleString('ru-RU'));
 
-            try {
-                await fetch(SCRIPT_URL, { method: 'POST', body: payload, mode: 'no-cors' });
-            } catch (e) {
-                console.error(e);
-            }
+            try { await fetch(SCRIPT_URL, { method: 'POST', body: payload, mode: 'no-cors' }); } catch (e) { console.error(e); }
 
-            // Скрываем форму, показываем успех
-            document.getElementById('lead-form').style.display = 'none';
             document.getElementById('success-msg').classList.add('show');
             btn.textContent = 'Рассчитать и отправить заявку';
             btn.disabled = false;
         }
 
-        function scrollToResult() {
-            document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        function scrollToForm() { document.getElementById('form-block').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 
         function resetAll() {
             document.querySelectorAll('.section-body input, .section-body button').forEach(el => el.disabled = false);
@@ -554,11 +573,11 @@
             document.getElementById('light-value').value = '0';
             document.getElementById('light-count').textContent = '0';
             ['input-name', 'input-phone', 'input-email'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('error-msg').classList.remove('show');
+            document.getElementById('form-error').classList.remove('show');
             document.getElementById('success-msg').classList.remove('show');
             document.getElementById('result-card').classList.remove('show');
             document.getElementById('calc-footer').classList.remove('show');
-            document.getElementById('lead-form').style.display = '';
+            document.getElementById('form-block').style.display = '';
             document.getElementById('bottom-bar').style.display = '';
             document.getElementById('btn-submit').textContent = 'Рассчитать и отправить заявку';
             document.getElementById('btn-submit').disabled = false;

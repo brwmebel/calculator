@@ -366,7 +366,7 @@
                 </div>
             </div>
 
-            <!-- Результат -->
+            <!-- ========== РЕЗУЛЬТАТ + ФОРМА ========== -->
             <div class="result-card" id="result-card">
                 <div class="result-badge">Смета рассчитана</div>
                 <div class="result-price" id="result-price">0 ₽</div>
@@ -375,6 +375,8 @@
                     По вопросам звоните: <a href="tel:+78129258856">+7 (812) 925 88-56</a><br>
                     <span style="font-size:11px;">Компания «Мебель и Стиль»</span>
                 </div>
+
+                <!-- ФОРМА ВВОДА ДАННЫХ -->
                 <div class="lead-form" id="lead-form">
                     <input type="text" id="input-name" placeholder="Ваше имя *" required autocomplete="name">
                     <input type="tel" id="input-phone" placeholder="Телефон *" required autocomplete="tel">
@@ -382,10 +384,13 @@
                     <span class="error-msg" id="error-msg">Пожалуйста, заполните обязательные поля</span>
                     <button class="btn btn-block" id="btn-submit" onclick="calculateAndSend()">Рассчитать и отправить заявку</button>
                 </div>
+
+                <!-- СООБЩЕНИЕ ОБ УСПЕХЕ -->
                 <div class="success-msg" id="success-msg">
                     <i class="fas fa-check-circle"></i>
-                    Заявка отправлена! Мы свяжемся с вами в ближайшее время.
+                    Заявка отправлена!<br><small>Мы свяжемся с вами в ближайшее время.</small>
                 </div>
+
                 <button class="btn btn-outline btn-block" onclick="resetAll()">Пересчитать заново</button>
             </div>
 
@@ -404,9 +409,6 @@
     <script>
         // ═══════════════ НАСТРОЙКИ ═══════════════
         const SERVICES_PRICE = 200000;
-
-        // ⚠️ ЗАМЕНИ НА СВОЙ URL ОТ GOOGLE APPS SCRIPT ⚠️
-        // Инструкция по получению — ниже
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYZnOnUPN2hIudKjgX82xnYp9anOarFgE5DxKya1Zs4uzf0vtmgYeLCPSs7SK4c--A/exec';
         // ══════════════════════════════════════════
 
@@ -416,13 +418,9 @@
             const count = document.querySelector('input[name="bedroom-count"]:checked')?.value || '0';
             const b1 = document.getElementById('bedroom-block-1');
             const b2 = document.getElementById('bedroom-block-2');
-            if (count === '0') { b1.style.display = 'none';
-                b2.style.display = 'none';
-                clearCheckboxes(b1);
-                clearCheckboxes(b2); } else if (count === '1') { b1.style.display = 'block';
-                b2.style.display = 'none';
-                clearCheckboxes(b2); } else { b1.style.display = 'block';
-                b2.style.display = 'block'; }
+            if (count === '0') { b1.style.display = 'none'; b2.style.display = 'none'; clearCheckboxes(b1); clearCheckboxes(b2); }
+            else if (count === '1') { b1.style.display = 'block'; b2.style.display = 'none'; clearCheckboxes(b2); }
+            else { b1.style.display = 'block'; b2.style.display = 'block'; }
             updateAllBadges();
         }
 
@@ -432,37 +430,40 @@
             const input = document.getElementById('light-value');
             const span = document.getElementById('light-count');
             let v = Math.max(0, (parseInt(input.value) || 0) + delta);
-            input.value = v;
-            span.textContent = v;
+            input.value = v; span.textContent = v;
             updateAllBadges();
         }
 
         function updateAllBadges() {
-            updateBadge('badge-kitchen', () => { const u = document.querySelector('input[name="kitchen-unit"]:checked'); return (
-                    u && u.value !== 'none') || !!document.querySelector('#sec-kitchen input[type="checkbox"]:checked'); });
-            updateBadge('badge-bedrooms', () => { let n = 0;
-                document.querySelectorAll('.bedroom-block').forEach(b => b.querySelectorAll('input:checked').forEach(() =>
-                    n++)); return n > 0; });
+            updateBadge('badge-kitchen', () => {
+                const u = document.querySelector('input[name="kitchen-unit"]:checked');
+                return (u && u.value !== 'none') || !!document.querySelector('#sec-kitchen input[type="checkbox"]:checked');
+            });
+            updateBadge('badge-bedrooms', () => {
+                let n = 0;
+                document.querySelectorAll('.bedroom-block').forEach(b => b.querySelectorAll('input:checked').forEach(() => n++));
+                return n > 0;
+            });
             updateBadge('badge-appliances', () => !!document.querySelector('#sec-appliances input:checked'));
-            updateBadge('badge-hallway', () => document.getElementById('chk-hallway').checked || (parseInt(document
-                .getElementById('light-value').value) || 0) > 0);
+            updateBadge('badge-hallway', () => document.getElementById('chk-hallway').checked || (parseInt(document.getElementById('light-value').value) || 0) > 0);
         }
 
         function updateBadge(id, fn) { const el = document.getElementById(id); if (el) el.classList.toggle('visible', fn()); }
-        document.addEventListener('change', e => { if (e.target.matches('input')) { updateAllBadges(); if (e.target.name ===
-                    'bedroom-count') updateBedroomBlocks(); } });
+
+        document.addEventListener('change', e => {
+            if (e.target.matches('input')) { updateAllBadges(); if (e.target.name === 'bedroom-count') updateBedroomBlocks(); }
+        });
 
         function calculateTotal() {
             let t = SERVICES_PRICE;
             const u = document.querySelector('input[name="kitchen-unit"]:checked');
             if (u && u.value !== 'none') t += parseInt(u.dataset.price) || 0;
-            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(c => t += parseInt(c.dataset
-                .price) || 0);
-            document.querySelectorAll('.bedroom-block').forEach(b => { if (b.style.display !== 'none') b.querySelectorAll(
-                    'input:checked').forEach(c => t += parseInt(c.dataset.price) || 0); });
+            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(c => t += parseInt(c.dataset.price) || 0);
+            document.querySelectorAll('.bedroom-block').forEach(b => {
+                if (b.style.display !== 'none') b.querySelectorAll('input:checked').forEach(c => t += parseInt(c.dataset.price) || 0);
+            });
             document.querySelectorAll('#sec-appliances input:checked').forEach(c => t += parseInt(c.dataset.price) || 0);
-            if (document.getElementById('chk-hallway').checked) t += parseInt(document.getElementById('chk-hallway').dataset
-                .price) || 0;
+            if (document.getElementById('chk-hallway').checked) t += parseInt(document.getElementById('chk-hallway').dataset.price) || 0;
             t += (parseInt(document.getElementById('light-value').value) || 0) * 2000;
             return t;
         }
@@ -473,9 +474,9 @@
             let kc = (u && u.value !== 'none') ? 1 : 0;
             document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(() => kc++);
             if (kc > 0) lines.push('<strong>Кухня:</strong> ' + kc + ' позиц.');
-            document.querySelectorAll('.bedroom-block').forEach((b, i) => { if (b.style.display !== 'none') { const n = b
-                        .querySelectorAll('input:checked').length; if (n > 0) lines.push('<strong>Спальня ' + (i + 1) +
-                        ':</strong> ' + n + ' позиц.'); } });
+            document.querySelectorAll('.bedroom-block').forEach((b, i) => {
+                if (b.style.display !== 'none') { const n = b.querySelectorAll('input:checked').length; if (n > 0) lines.push('<strong>Спальня ' + (i+1) + ':</strong> ' + n + ' позиц.'); }
+            });
             let tc = document.querySelectorAll('#sec-appliances input:checked').length;
             if (tc > 0) lines.push('<strong>Техника:</strong> ' + tc + ' позиц.');
             if (document.getElementById('chk-hallway').checked) lines.push('<strong>Прихожая:</strong> комплект');
@@ -485,23 +486,8 @@
             return lines.join('<br>');
         }
 
-        function buildSelectedItems() {
-            const items = { kitchen: [], bedroom1: [], bedroom2: [], appliances: [], hallway: false, light: 0, services: true };
-            const u = document.querySelector('input[name="kitchen-unit"]:checked');
-            if (u && u.value !== 'none') items.kitchen.push(u.value === 'straight' ? 'Прямой гарнитур' : 'Угловой гарнитур');
-            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => items.kitchen.push(cb
-                .parentElement.textContent.trim()));
-            const b1 = document.getElementById('bedroom-block-1');
-            if (b1.style.display !== 'none') b1.querySelectorAll('input:checked').forEach(cb => items.bedroom1.push(cb
-                .parentElement.textContent.trim()));
-            const b2 = document.getElementById('bedroom-block-2');
-            if (b2.style.display !== 'none') b2.querySelectorAll('input:checked').forEach(cb => items.bedroom2.push(cb
-                .parentElement.textContent.trim()));
-            document.querySelectorAll('#sec-appliances input:checked').forEach(cb => items.appliances.push(cb.parentElement
-                .textContent.trim()));
-            items.hallway = document.getElementById('chk-hallway').checked;
-            items.light = parseInt(document.getElementById('light-value').value) || 0;
-            return items;
+        function buildSummaryText() {
+            return buildSummary().replace(/<[^>]*>/g, ', ').replace(/, +/g, ', ').replace(/^, /, '').replace(/, $/, '');
         }
 
         async function calculateAndSend() {
@@ -516,20 +502,21 @@
 
             const total = calculateTotal();
             const summary = buildSummary();
-            const summaryText = summary.replace(/<[^>]*>/g, ', ').replace(/, +/g, ', ').replace(/^, /, '');
+            const summaryText = buildSummaryText();
 
-            // Показываем результат сразу
+            // Показываем результат
             document.getElementById('result-price').textContent = total.toLocaleString('ru-RU') + ' ₽';
             document.getElementById('result-summary').innerHTML = summary;
             document.getElementById('result-card').classList.add('show');
             document.getElementById('calc-footer').classList.add('show');
-            document.querySelectorAll('.section-body input, .section-body button').forEach(el => el.disabled = true);
-            document.querySelectorAll('.section').forEach(el => el.classList.add('disabled-area'));
-            document.getElementById('lead-form').style.display = 'none';
-            document.getElementById('bottom-bar').style.display = 'none';
             document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // Отправляем в Google Sheets
+            // Блокируем изменения
+            document.querySelectorAll('.section-body input, .section-body button').forEach(el => el.disabled = true);
+            document.querySelectorAll('.section').forEach(el => el.classList.add('disabled-area'));
+            document.getElementById('bottom-bar').style.display = 'none';
+
+            // Отправка
             btn.textContent = 'Отправка...';
             btn.disabled = true;
 
@@ -542,26 +529,21 @@
             payload.append('date', new Date().toLocaleString('ru-RU'));
 
             try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: payload,
-                    mode: 'no-cors'
-                });
-                // no-cors не возвращает читаемый ответ, поэтому считаем что успех
-                document.getElementById('success-msg').classList.add('show');
-            } catch (error) {
-                console.error('Ошибка:', error);
-                document.getElementById('success-msg').innerHTML =
-                    '<i class="fas fa-check-circle"></i>Смета готова!<br><small>Позвоните нам: +7 (812) 925 88-56</small>';
-                document.getElementById('success-msg').classList.add('show');
+                await fetch(SCRIPT_URL, { method: 'POST', body: payload, mode: 'no-cors' });
+            } catch (e) {
+                console.error(e);
             }
 
+            // Скрываем форму, показываем успех
+            document.getElementById('lead-form').style.display = 'none';
+            document.getElementById('success-msg').classList.add('show');
             btn.textContent = 'Рассчитать и отправить заявку';
             btn.disabled = false;
         }
 
-        function scrollToResult() { document.getElementById('result-card').scrollIntoView({ behavior: 'smooth',
-            block: 'center' }); }
+        function scrollToResult() {
+            document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
 
         function resetAll() {
             document.querySelectorAll('.section-body input, .section-body button').forEach(el => el.disabled = false);
@@ -574,8 +556,6 @@
             ['input-name', 'input-phone', 'input-email'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('error-msg').classList.remove('show');
             document.getElementById('success-msg').classList.remove('show');
-            document.getElementById('success-msg').innerHTML =
-                '<i class="fas fa-check-circle"></i>Заявка отправлена! Мы свяжемся с вами в ближайшее время.';
             document.getElementById('result-card').classList.remove('show');
             document.getElementById('calc-footer').classList.remove('show');
             document.getElementById('lead-form').style.display = '';

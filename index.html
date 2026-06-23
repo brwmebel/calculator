@@ -17,21 +17,16 @@
             --light: #f5f7f6; --dark: #121212; --gray: #6c757d; --light-gray: #e0e5e2;
             --transition: all 0.25s ease-out; --radius: 4px;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Inter', 'Segoe UI', sans-serif; font-weight: 400; color: var(--dark);
             background: #fff; line-height: 1.6; letter-spacing: -0.01em;
             -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column;
         }
-
         h1, h2, h3, .section-header .title, .btn, .calc-header .logo {
             font-family: 'Raleway', sans-serif; font-weight: 600; letter-spacing: -0.02em;
         }
-
         .container { max-width: 760px; margin: 0 auto; padding: 0 20px; width: 100%; }
-
         .calc-header {
             background: var(--primary); text-align: center; padding: 20px 16px 18px;
             color: #fff; flex-shrink: 0;
@@ -46,12 +41,10 @@
             border: 2px solid rgba(255,255,255,0.25); border-radius: var(--radius); transition: var(--transition);
         }
         .calc-header .phone-link:hover { border-color: var(--accent); color: var(--accent); }
-
         main { flex: 1; padding: 16px 0 90px; }
         .intro { text-align: center; padding: 10px 0 20px; }
         .intro h2 { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
         .intro p { font-size: 0.9rem; color: var(--gray); max-width: 500px; margin: 0 auto; }
-
         .section { background: #fff; margin-bottom: 6px; border-bottom: 1px solid var(--light-gray); }
         .section-header {
             display: flex; align-items: center; justify-content: space-between;
@@ -72,7 +65,6 @@
         .section.open .section-header .arrow { transform: rotate(180deg); }
         .section-body { display: none; padding: 0 0 18px; border-top: 1px solid var(--light-gray); padding-top: 14px; }
         .section.open .section-body { display: block; }
-
         .option-group { margin-bottom: 16px; }
         .option-group:last-child { margin-bottom: 0; }
         .option-group-label {
@@ -101,7 +93,6 @@
             content: ''; position: absolute; left: 4px; top: 4px;
             width: 5px; height: 5px; background: #fff; border-radius: 50%;
         }
-
         .number-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; }
         .number-row button {
             width: 32px; height: 32px; border: 2px solid var(--light-gray); background: #fff;
@@ -112,10 +103,7 @@
         .number-row button:hover { border-color: var(--primary); background: var(--light); }
         .number-row span { font-size: 16px; font-weight: 700; min-width: 22px; text-align: center; color: var(--primary); }
         .number-row .hint { font-size: 12px; color: var(--gray); }
-
-        .number-input-inline {
-            display: flex; align-items: center; gap: 8px; padding: 6px 10px;
-        }
+        .number-input-inline { display: flex; align-items: center; gap: 8px; padding: 6px 10px; }
         .number-input-inline input {
             width: 60px; padding: 6px 8px; border: 2px solid var(--light-gray);
             font-size: 14px; font-family: 'Inter', sans-serif; text-align: center;
@@ -123,7 +111,6 @@
         }
         .number-input-inline input:focus { outline: none; border-color: var(--accent); background: #fff; }
         .number-input-inline .hint { font-size: 12px; color: var(--gray); }
-
         .services-fixed {
             background: #f4f6f5; border-left: 3px solid var(--accent);
             padding: 10px 14px; display: flex; align-items: flex-start; gap: 10px;
@@ -131,7 +118,6 @@
         }
         .services-fixed .lock { color: var(--accent); flex-shrink: 0; margin-top: 2px; font-size: 14px; }
         .services-fixed strong { font-weight: 600; color: var(--primary); }
-
         .form-block {
             background: #fff; border: 1px solid var(--light-gray);
             border-radius: var(--radius); padding: 22px 20px; margin: 20px 0 12px;
@@ -148,7 +134,6 @@
         .form-row input::placeholder { color: #aaa; }
         .form-error { color: #c0392b; font-size: 11.5px; text-align: left; display: none; font-weight: 500; margin-bottom: 8px; }
         .form-error.show { display: block; }
-
         .bottom-bar {
             position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
             border-top: 1px solid var(--light-gray); padding: 12px 20px;
@@ -156,7 +141,6 @@
             gap: 14px; flex-wrap: wrap; z-index: 100; box-shadow: 0 -2px 8px rgba(0,0,0,0.03);
         }
         .bottom-bar .hint-text { font-size: 12px; color: var(--gray); }
-
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 6px;
             padding: 11px 24px; font-size: 12.5px; font-weight: 700; text-transform: uppercase;
@@ -177,7 +161,6 @@
         .btn-outline::before { display: none; }
         .btn-block { width: 100%; justify-content: center; }
         .btn:disabled { opacity: 0.6; pointer-events: none; }
-
         .result-card {
             display: none; background: #fff; border: 1px solid var(--light-gray);
             padding: 28px 22px 24px; text-align: center; margin: 16px 0;
@@ -209,12 +192,9 @@
         .success-msg { display: none; text-align: center; padding: 16px 0 8px; color: var(--primary-light); font-weight: 600; font-size: 14px; }
         .success-msg.show { display: block; }
         .success-msg i { color: var(--accent); font-size: 28px; display: block; margin-bottom: 8px; }
-
         .disabled-area { pointer-events: none; opacity: 0.55; filter: grayscale(15%); }
-
         .calc-footer { background: #f5f7f6; text-align: center; padding: 14px 16px; font-size: 11px; color: var(--gray); border-top: 1px solid var(--light-gray); flex-shrink: 0; display: none; }
         .calc-footer.show { display: block; }
-
         @media (max-width: 480px) {
             .calc-header { padding: 16px 12px 14px; }
             .calc-header .logo { font-size: 19px; }
@@ -232,12 +212,11 @@
         <div class="logo">Мебель и <span>Стиль</span></div>
         <div class="divider"></div>
         <div class="subtitle">Калькулятор сметы</div>
-        <a href="tel:+78129258856" class="phone-link"><i class="fas fa-phone" style="margin-right:5px;"></i>+7 (812) 925 88-56</a>
+        <a href="tel:+78129258856" class="phone-link"><i class="fas fa-phone"></i> +7 (812) 925 88-56</a>
     </header>
 
     <main>
         <div class="container" id="app">
-
             <div class="intro">
                 <h2>Рассчитайте стоимость меблировки</h2>
                 <p>Отметьте нужные позиции в разделах ниже. Услуги сборки и монтажа уже включены в смету.</p>
@@ -352,9 +331,9 @@
                 <div class="section-body">
                     <label class="option"><input type="checkbox" data-price="20000" id="chk-hallway"> Прихожая (готовый комплект)</label>
                     <div class="number-row">
-                        <button onclick="changeLight(-1)" aria-label="Уменьшить">−</button>
+                        <button onclick="changeLight(-1)">−</button>
                         <span id="light-count">0</span>
-                        <button onclick="changeLight(1)" aria-label="Увеличить">+</button>
+                        <button onclick="changeLight(1)">+</button>
                         <span class="hint">светильников / точек</span>
                     </div>
                     <input type="hidden" id="light-value" value="0">
@@ -403,13 +382,10 @@
                 </div>
                 <button class="btn btn-outline btn-block" onclick="resetAll()">Пересчитать заново</button>
             </div>
-
         </div>
     </main>
 
-    <footer class="calc-footer" id="calc-footer">
-        © 2026 Мебель и Стиль. Все права защищены.
-    </footer>
+    <footer class="calc-footer" id="calc-footer">© 2026 Мебель и Стиль. Все права защищены.</footer>
 
     <div class="bottom-bar" id="bottom-bar">
         <span class="hint-text">Заполните разделы и форму выше</span>
@@ -420,7 +396,7 @@
         const SERVICES_PRICE = 200000;
         const CHAIR_PRICE = 3500;
         const LIGHT_PRICE = 2000;
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzFmpRKrn_r9tRaHtcfdnnOOhwSnweZ1ZWZ-cZ-g4Te5rmFKfZINUONBwLT6tDkzhMB/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxjmzMc5yBOyzHOVEq1J-yd3xwmExx3jq7_MZ0Bh1g11tsjOZz4fPIIgtdUGsxEVEO/exec';
 
         function toggleSection(id) { document.getElementById(id).classList.toggle('open'); }
 
@@ -469,8 +445,7 @@
             const u = document.querySelector('input[name="kitchen-unit"]:checked');
             if (u && u.value !== 'none') t += parseInt(u.dataset.price) || 0;
             document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(c => t += parseInt(c.dataset.price) || 0);
-            const chairs = parseInt(document.getElementById('chair-count').value) || 0;
-            t += chairs * CHAIR_PRICE;
+            t += (parseInt(document.getElementById('chair-count').value) || 0) * CHAIR_PRICE;
             document.querySelectorAll('.bedroom-block').forEach(b => {
                 if (b.style.display !== 'none') b.querySelectorAll('input:checked').forEach(c => t += parseInt(c.dataset.price) || 0);
             });
@@ -480,46 +455,37 @@
             return t;
         }
 
-        function getKitchenItems() {
-            const items = [];
-            const u = document.querySelector('input[name="kitchen-unit"]:checked');
-            if (u && u.value !== 'none') items.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой');
-            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
-            const chairs = parseInt(document.getElementById('chair-count').value) || 0;
-            if (chairs > 0) items.push('Стулья ' + chairs + ' шт');
-            return items.join(', ') || '—';
-        }
-
-        function getBedroomItems(blockId) {
-            const items = [];
-            const block = document.getElementById(blockId);
-            if (block && block.style.display !== 'none') {
-                block.querySelectorAll('input:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
-            }
-            return items.join(', ') || '—';
-        }
-
-        function getTechItems() {
-            const items = [];
-            document.querySelectorAll('#sec-appliances input:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
-            return items.join(', ') || '—';
-        }
-
         function buildSummary() {
             const lines = [];
-            const kitchen = getKitchenItems();
-            if (kitchen !== '—') lines.push('<strong>Кухня:</strong> ' + kitchen);
+            // Кухня
+            const kitchenItems = [];
+            const u = document.querySelector('input[name="kitchen-unit"]:checked');
+            if (u && u.value !== 'none') kitchenItems.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой');
+            document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => kitchenItems.push(cb.parentElement.textContent.trim()));
+            const chairs = parseInt(document.getElementById('chair-count').value) || 0;
+            if (chairs > 0) kitchenItems.push('Стулья ' + chairs + ' шт');
+            if (kitchenItems.length > 0) lines.push('🍳 Кухня: ' + kitchenItems.join(', '));
+            // Спальни
             ['bedroom-block-1', 'bedroom-block-2'].forEach((id, i) => {
-                const items = getBedroomItems(id);
-                if (items !== '—') lines.push('<strong>Спальня ' + (i+1) + ':</strong> ' + items);
+                const block = document.getElementById(id);
+                if (block && block.style.display !== 'none') {
+                    const items = [];
+                    block.querySelectorAll('input:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
+                    if (items.length > 0) lines.push('🛏️ Спальня ' + (i+1) + ': ' + items.join(', '));
+                }
             });
-            const tech = getTechItems();
-            if (tech !== '—') lines.push('<strong>Техника:</strong> ' + tech);
-            if (document.getElementById('chk-hallway').checked) lines.push('<strong>Прихожая:</strong> готовый комплект');
+            // Техника
+            const techItems = [];
+            document.querySelectorAll('#sec-appliances input:checked').forEach(cb => techItems.push(cb.parentElement.textContent.trim()));
+            if (techItems.length > 0) lines.push('📺 Техника: ' + techItems.join(', '));
+            // Прихожая
+            if (document.getElementById('chk-hallway').checked) lines.push('🚪 Прихожая: готовый комплект');
+            // Свет
             const lq = parseInt(document.getElementById('light-value').value) || 0;
-            if (lq > 0) lines.push('<strong>Свет:</strong> ' + lq + ' точ.');
-            lines.push('<strong>Услуги под ключ:</strong> включены');
-            return lines.join('<br>');
+            if (lq > 0) lines.push('💡 Свет: ' + lq + ' точ.');
+            // Услуги
+            lines.push('🔧 Услуги под ключ: включены');
+            return lines.join('\n');
         }
 
         async function calculateAndSend() {
@@ -533,10 +499,11 @@
             err.classList.remove('show');
 
             const total = calculateTotal();
-            const summary = buildSummary();
+            const summaryText = buildSummary();
 
+            // Показываем результат (HTML-версия с <br>)
             document.getElementById('result-price').textContent = total.toLocaleString('ru-RU') + ' ₽';
-            document.getElementById('result-summary').innerHTML = summary;
+            document.getElementById('result-summary').innerHTML = summaryText.replace(/\n/g, '<br>');
             document.getElementById('result-card').classList.add('show');
             document.getElementById('calc-footer').classList.add('show');
             document.getElementById('form-block').style.display = 'none';
@@ -554,13 +521,7 @@
             payload.append('phone', phone);
             payload.append('email', email);
             payload.append('total', total);
-            payload.append('kitchen', getKitchenItems());
-            payload.append('bedroom1', getBedroomItems('bedroom-block-1'));
-            payload.append('bedroom2', getBedroomItems('bedroom-block-2'));
-            payload.append('appliances', getTechItems());
-            payload.append('hallway', document.getElementById('chk-hallway').checked ? 'Готовый комплект' : '—');
-            payload.append('light', String(parseInt(document.getElementById('light-value').value) || 0));
-            payload.append('services', 'Включены');
+            payload.append('summary', summaryText);
             payload.append('date', new Date().toLocaleString('ru-RU'));
 
             try { await fetch(SCRIPT_URL, { method: 'POST', body: payload, mode: 'no-cors' }); } catch (e) { console.error(e); }

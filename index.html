@@ -13,25 +13,17 @@
 
     <style>
         :root {
-            --primary: #1a3b2e;
-            --primary-light: #2a5a45;
-            --accent: #d4b68a;
-            --light: #f5f7f6;
-            --dark: #121212;
-            --gray: #6c757d;
-            --light-gray: #e0e5e2;
-            --transition: all 0.25s ease-out;
-            --radius: 4px;
+            --primary: #1a3b2e; --primary-light: #2a5a45; --accent: #d4b68a;
+            --light: #f5f7f6; --dark: #121212; --gray: #6c757d; --light-gray: #e0e5e2;
+            --transition: all 0.25s ease-out; --radius: 4px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            font-weight: 400; color: var(--dark); background: #fff;
-            line-height: 1.6; letter-spacing: -0.01em;
-            -webkit-font-smoothing: antialiased; min-height: 100vh;
-            display: flex; flex-direction: column;
+            font-family: 'Inter', 'Segoe UI', sans-serif; font-weight: 400; color: var(--dark);
+            background: #fff; line-height: 1.6; letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column;
         }
 
         h1, h2, h3, .section-header .title, .btn, .calc-header .logo {
@@ -41,8 +33,8 @@
         .container { max-width: 760px; margin: 0 auto; padding: 0 20px; width: 100%; }
 
         .calc-header {
-            background: var(--primary); text-align: center;
-            padding: 20px 16px 18px; color: #fff; flex-shrink: 0;
+            background: var(--primary); text-align: center; padding: 20px 16px 18px;
+            color: #fff; flex-shrink: 0;
         }
         .calc-header .logo { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
         .calc-header .logo span { color: var(--accent); }
@@ -271,7 +263,7 @@
                         <div class="number-input-inline">
                             <span style="font-size:13px;">Стулья (кол-во):</span>
                             <input type="number" id="chair-count" value="0" min="0" max="20" onchange="updateAllBadges()">
-                            <span class="hint">× 3 500 ₽/шт</span>
+                            <span class="hint">шт.</span>
                         </div>
                         <label class="option"><input type="checkbox" data-price="25000"> Диван</label>
                         <label class="option"><input type="checkbox" data-price="35000"> Диван-кровать</label>
@@ -363,7 +355,7 @@
                         <button onclick="changeLight(-1)" aria-label="Уменьшить">−</button>
                         <span id="light-count">0</span>
                         <button onclick="changeLight(1)" aria-label="Увеличить">+</button>
-                        <span class="hint">светильников / точек (× 2 000 ₽)</span>
+                        <span class="hint">светильников / точек</span>
                     </div>
                     <input type="hidden" id="light-value" value="0">
                 </div>
@@ -427,6 +419,7 @@
     <script>
         const SERVICES_PRICE = 200000;
         const CHAIR_PRICE = 3500;
+        const LIGHT_PRICE = 2000;
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYZnOnUPN2hIudKjgX82xnYp9anOarFgE5DxKya1Zs4uzf0vtmgYeLCPSs7SK4c--A/exec';
 
         function toggleSection(id) { document.getElementById(id).classList.toggle('open'); }
@@ -483,7 +476,7 @@
             });
             document.querySelectorAll('#sec-appliances input:checked').forEach(c => t += parseInt(c.dataset.price) || 0);
             if (document.getElementById('chk-hallway').checked) t += parseInt(document.getElementById('chk-hallway').dataset.price) || 0;
-            t += (parseInt(document.getElementById('light-value').value) || 0) * 2000;
+            t += (parseInt(document.getElementById('light-value').value) || 0) * LIGHT_PRICE;
             return t;
         }
 
@@ -493,8 +486,8 @@
             if (u && u.value !== 'none') items.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой');
             document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
             const chairs = parseInt(document.getElementById('chair-count').value) || 0;
-            if (chairs > 0) items.push('Стулья: ' + chairs + ' шт');
-            return items;
+            if (chairs > 0) items.push('Стулья ' + chairs + ' шт');
+            return items.join(', ') || '—';
         }
 
         function getBedroomItems(blockId) {
@@ -503,25 +496,25 @@
             if (block && block.style.display !== 'none') {
                 block.querySelectorAll('input:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
             }
-            return items;
+            return items.join(', ') || '—';
         }
 
         function getTechItems() {
             const items = [];
             document.querySelectorAll('#sec-appliances input:checked').forEach(cb => items.push(cb.parentElement.textContent.trim()));
-            return items;
+            return items.join(', ') || '—';
         }
 
         function buildSummary() {
             const lines = [];
-            const kitchenItems = getKitchenItems();
-            if (kitchenItems.length > 0) lines.push('<strong>Кухня:</strong> ' + kitchenItems.join(', '));
+            const kitchen = getKitchenItems();
+            if (kitchen !== '—') lines.push('<strong>Кухня:</strong> ' + kitchen);
             ['bedroom-block-1', 'bedroom-block-2'].forEach((id, i) => {
                 const items = getBedroomItems(id);
-                if (items.length > 0) lines.push('<strong>Спальня ' + (i+1) + ':</strong> ' + items.join(', '));
+                if (items !== '—') lines.push('<strong>Спальня ' + (i+1) + ':</strong> ' + items);
             });
-            const techItems = getTechItems();
-            if (techItems.length > 0) lines.push('<strong>Техника:</strong> ' + techItems.join(', '));
+            const tech = getTechItems();
+            if (tech !== '—') lines.push('<strong>Техника:</strong> ' + tech);
             if (document.getElementById('chk-hallway').checked) lines.push('<strong>Прихожая:</strong> готовый комплект');
             const lq = parseInt(document.getElementById('light-value').value) || 0;
             if (lq > 0) lines.push('<strong>Свет:</strong> ' + lq + ' точ.');
@@ -561,12 +554,12 @@
             payload.append('phone', phone);
             payload.append('email', email);
             payload.append('total', total);
-            payload.append('kitchen', getKitchenItems().join(', ') || '—');
-            payload.append('bedroom1', getBedroomItems('bedroom-block-1').join(', ') || '—');
-            payload.append('bedroom2', getBedroomItems('bedroom-block-2').join(', ') || '—');
-            payload.append('appliances', getTechItems().join(', ') || '—');
+            payload.append('kitchen', getKitchenItems());
+            payload.append('bedroom1', getBedroomItems('bedroom-block-1'));
+            payload.append('bedroom2', getBedroomItems('bedroom-block-2'));
+            payload.append('appliances', getTechItems());
             payload.append('hallway', document.getElementById('chk-hallway').checked ? 'Готовый комплект' : '—');
-            payload.append('light', (parseInt(document.getElementById('light-value').value) || 0).toString());
+            payload.append('light', String(parseInt(document.getElementById('light-value').value) || 0));
             payload.append('services', 'Включены');
             payload.append('date', new Date().toLocaleString('ru-RU'));
 

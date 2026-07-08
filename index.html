@@ -45,6 +45,7 @@
         .intro { text-align: center; padding: 10px 0 20px; }
         .intro h2 { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
         .intro p { font-size: 0.9rem; color: var(--gray); max-width: 500px; margin: 0 auto; }
+
         .section { background: #fff; margin-bottom: 6px; border-bottom: 1px solid var(--light-gray); }
         .section-header {
             display: flex; align-items: center; justify-content: space-between;
@@ -65,6 +66,7 @@
         .section.open .section-header .arrow { transform: rotate(180deg); }
         .section-body { display: none; padding: 0 0 18px; border-top: 1px solid var(--light-gray); padding-top: 14px; }
         .section.open .section-body { display: block; }
+
         .option-group { margin-bottom: 16px; }
         .option-group:last-child { margin-bottom: 0; }
         .option-group-label {
@@ -93,6 +95,7 @@
             content: ''; position: absolute; left: 4px; top: 4px;
             width: 5px; height: 5px; background: #fff; border-radius: 50%;
         }
+
         .number-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; }
         .number-row button {
             width: 32px; height: 32px; border: 2px solid var(--light-gray); background: #fff;
@@ -103,6 +106,7 @@
         .number-row button:hover { border-color: var(--primary); background: var(--light); }
         .number-row span { font-size: 16px; font-weight: 700; min-width: 22px; text-align: center; color: var(--primary); }
         .number-row .hint { font-size: 12px; color: var(--gray); }
+
         .number-input-inline { display: flex; align-items: center; gap: 8px; padding: 6px 10px; }
         .number-input-inline input {
             width: 60px; padding: 6px 8px; border: 2px solid var(--light-gray);
@@ -111,6 +115,7 @@
         }
         .number-input-inline input:focus { outline: none; border-color: var(--accent); background: #fff; }
         .number-input-inline .hint { font-size: 12px; color: var(--gray); }
+
         .services-fixed {
             background: #f4f6f5; border-left: 3px solid var(--accent);
             padding: 10px 14px; display: flex; align-items: flex-start; gap: 10px;
@@ -118,6 +123,7 @@
         }
         .services-fixed .lock { color: var(--accent); flex-shrink: 0; margin-top: 2px; font-size: 14px; }
         .services-fixed strong { font-weight: 600; color: var(--primary); }
+
         .form-block {
             background: #fff; border: 1px solid var(--light-gray);
             border-radius: var(--radius); padding: 22px 20px; margin: 20px 0 12px;
@@ -134,6 +140,7 @@
         .form-row input::placeholder { color: #aaa; }
         .form-error { color: #c0392b; font-size: 11.5px; text-align: left; display: none; font-weight: 500; margin-bottom: 8px; }
         .form-error.show { display: block; }
+
         .bottom-bar {
             position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
             border-top: 1px solid var(--light-gray); padding: 12px 20px;
@@ -141,6 +148,7 @@
             gap: 14px; flex-wrap: wrap; z-index: 100; box-shadow: 0 -2px 8px rgba(0,0,0,0.03);
         }
         .bottom-bar .hint-text { font-size: 12px; color: var(--gray); }
+
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 6px;
             padding: 11px 24px; font-size: 12.5px; font-weight: 700; text-transform: uppercase;
@@ -161,6 +169,7 @@
         .btn-outline::before { display: none; }
         .btn-block { width: 100%; justify-content: center; }
         .btn:disabled { opacity: 0.6; pointer-events: none; }
+
         .result-card {
             display: none; background: #fff; border: 1px solid var(--light-gray);
             padding: 28px 22px 24px; text-align: center; margin: 16px 0;
@@ -186,7 +195,6 @@
             margin: 0 auto 16px; padding: 12px 14px; background: var(--light);
             border-radius: var(--radius); max-width: 420px;
         }
-        .result-summary strong { color: var(--primary); font-weight: 600; }
         .result-phone {
             font-size: 13px; color: var(--gray); margin-bottom: 14px;
             padding: 10px 12px; background: #f9faf9; border-radius: var(--radius); line-height: 1.6;
@@ -199,6 +207,7 @@
         .disabled-area { pointer-events: none; opacity: 0.55; filter: grayscale(15%); }
         .calc-footer { background: #f5f7f6; text-align: center; padding: 14px 16px; font-size: 11px; color: var(--gray); border-top: 1px solid var(--light-gray); flex-shrink: 0; display: none; }
         .calc-footer.show { display: block; }
+
         @media (max-width: 480px) {
             .calc-header { padding: 16px 12px 14px; }
             .calc-header .logo { font-size: 19px; }
@@ -222,9 +231,26 @@
         <div class="container" id="app">
             <div class="intro">
                 <h2>Рассчитайте стоимость меблировки</h2>
-                <p>Отметьте нужные позиции в разделах ниже. Услуги сборки и монтажа уже включены в смету.</p>
+                <p>Выберите тип квартиры и отметьте нужные позиции в разделах ниже. Услуги сборки и монтажа уже включены в смету.</p>
             </div>
 
+            <!-- ТИП КВАРТИРЫ -->
+            <div class="section open" id="sec-apartment-type">
+                <div class="section-header" onclick="toggleSection('sec-apartment-type')">
+                    <div class="left"><span class="icon"><i class="fas fa-home"></i></span><span class="title">Тип квартиры</span><span class="badge always">выбрано</span></div>
+                    <span class="arrow">▾</span>
+                </div>
+                <div class="section-body">
+                    <div class="option-group">
+                        <span class="option-group-label">Выберите тип квартиры</span>
+                        <label class="option"><input type="radio" name="apartment-type" value="studio" onchange="onApartmentTypeChange()"> Студия</label>
+                        <label class="option"><input type="radio" name="apartment-type" value="1room" onchange="onApartmentTypeChange()"> 1-комнатная</label>
+                        <label class="option"><input type="radio" name="apartment-type" value="2room" onchange="onApartmentTypeChange()"> 2-комнатная</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кухня -->
             <div class="section open" id="sec-kitchen">
                 <div class="section-header" onclick="toggleSection('sec-kitchen')">
                     <div class="left"><span class="icon"><i class="fas fa-utensils"></i></span><span class="title">Кухня / Кухня-гостиная</span><span class="badge" id="badge-kitchen">выбрано</span></div>
@@ -258,6 +284,7 @@
                 </div>
             </div>
 
+            <!-- Спальни -->
             <div class="section" id="sec-bedrooms">
                 <div class="section-header" onclick="toggleSection('sec-bedrooms')">
                     <div class="left"><span class="icon"><i class="fas fa-bed"></i></span><span class="title">Спальни</span><span class="badge" id="badge-bedrooms">выбрано</span></div>
@@ -305,6 +332,7 @@
                 </div>
             </div>
 
+            <!-- Техника -->
             <div class="section" id="sec-appliances">
                 <div class="section-header" onclick="toggleSection('sec-appliances')">
                     <div class="left"><span class="icon"><i class="fas fa-tv"></i></span><span class="title">Техника</span><span class="badge" id="badge-appliances">выбрано</span></div>
@@ -322,6 +350,7 @@
                 </div>
             </div>
 
+            <!-- Прихожая + Свет -->
             <div class="section" id="sec-hallway">
                 <div class="section-header" onclick="toggleSection('sec-hallway')">
                     <div class="left"><span class="icon"><i class="fas fa-door-open"></i></span><span class="title">Прихожая и свет</span><span class="badge" id="badge-hallway">выбрано</span></div>
@@ -339,19 +368,21 @@
                 </div>
             </div>
 
+            <!-- Услуги -->
             <div class="section" id="sec-services">
                 <div class="section-header" onclick="toggleSection('sec-services')">
                     <div class="left"><span class="icon"><i class="fas fa-tools"></i></span><span class="title">Услуги</span><span class="badge always">включены</span></div>
                     <span class="arrow">▾</span>
                 </div>
                 <div class="section-body">
-                    <div class="services-fixed">
+                    <div class="services-fixed" id="services-text">
                         <span class="lock"><i class="fas fa-lock"></i></span>
                         <span>Полный комплекс услуг (сборка, установка, монтаж «под ключ») — <strong>всегда включены в смету</strong>.</span>
                     </div>
                 </div>
             </div>
 
+            <!-- Форма -->
             <div class="form-block" id="form-block">
                 <div class="form-block-label">Ваши данные для расчёта</div>
                 <div class="form-block-sublabel">Заполните поля ниже и нажмите «Рассчитать». Смета появится здесь же.</div>
@@ -364,6 +395,7 @@
                 <button class="btn btn-block" id="btn-submit" onclick="calculateAndSend()">Рассчитать и отправить заявку</button>
             </div>
 
+            <!-- Результат -->
             <div class="result-card" id="result-card">
                 <div class="result-badge">Смета рассчитана</div>
                 <div class="result-price" id="result-price">0 ₽</div>
@@ -388,14 +420,23 @@
     </div>
 
     <script>
-        const SERVICES_PRICE = 200000;
         const CHAIR_PRICE = 3500;
         const LIGHT_PRICE = 2000;
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv11-baFQNExxSj4NEPwKJAJkLyu4TlZ3vgK35T2U-Tv7l0nVA48xwoublLS51UDxT/exec';
 
+        function getServicesPrice() {
+            var apt = document.querySelector('input[name="apartment-type"]:checked');
+            if (!apt) return 200000;
+            return apt.value === 'studio' ? 100000 : 200000;
+        }
+
         function toggleSection(id) {
             var el = document.getElementById(id);
             if (el) { el.classList.toggle('open'); }
+        }
+
+        function onApartmentTypeChange() {
+            updateAllBadges();
         }
 
         function updateBedroomBlocks() {
@@ -439,7 +480,7 @@
         });
 
         function calculateTotal() {
-            var t = SERVICES_PRICE;
+            var t = getServicesPrice();
             var u = document.querySelector('input[name="kitchen-unit"]:checked');
             if (u && u.value !== 'none') { t += parseInt(u.dataset.price) || 0; }
             document.querySelectorAll('#sec-kitchen input[type="checkbox"]:checked').forEach(function(c) { t += parseInt(c.dataset.price) || 0; });
@@ -455,6 +496,10 @@
 
         function buildSummary() {
             var lines = [];
+            var apt = document.querySelector('input[name="apartment-type"]:checked');
+            var aptName = apt ? (apt.value === 'studio' ? 'Студия' : apt.value === '1room' ? '1-комнатная' : '2-комнатная') : 'Не выбрана';
+            lines.push('🏠 Тип квартиры: ' + aptName);
+
             var kitchenItems = [];
             var u = document.querySelector('input[name="kitchen-unit"]:checked');
             if (u && u.value !== 'none') { kitchenItems.push(u.value === 'straight' ? 'Гарнитур прямой' : 'Гарнитур угловой'); }
@@ -462,6 +507,7 @@
             var chairs = parseInt(document.getElementById('chair-count').value) || 0;
             if (chairs > 0) { kitchenItems.push('Стулья ' + chairs + ' шт'); }
             if (kitchenItems.length > 0) { lines.push('🍳 Кухня: ' + kitchenItems.join(', ')); }
+
             ['bedroom-block-1', 'bedroom-block-2'].forEach(function(id, i) {
                 var block = document.getElementById(id);
                 if (block && block.style.display !== 'none') {
@@ -470,9 +516,11 @@
                     if (items.length > 0) { lines.push('🛏️ Спальня ' + (i+1) + ': ' + items.join(', ')); }
                 }
             });
+
             var techItems = [];
             document.querySelectorAll('#sec-appliances input:checked').forEach(function(cb) { techItems.push(cb.parentElement.textContent.trim()); });
             if (techItems.length > 0) { lines.push('📺 Техника: ' + techItems.join(', ')); }
+
             if (document.getElementById('chk-hallway').checked) { lines.push('🚪 Прихожая: готовый комплект'); }
             var lq = parseInt(document.getElementById('light-value').value) || 0;
             if (lq > 0) { lines.push('💡 Свет: ' + lq + ' точ.'); }
@@ -523,6 +571,7 @@
             document.querySelectorAll('.section-body input, .section-body button').forEach(function(el) { el.disabled = false; });
             document.querySelectorAll('.section').forEach(function(el) { el.classList.remove('disabled-area'); });
             document.querySelectorAll('input[type="checkbox"]').forEach(function(el) { el.checked = false; });
+            document.querySelectorAll('input[name="apartment-type"]').forEach(function(el) { el.checked = false; });
             var noneRadio = document.querySelector('input[name="kitchen-unit"][value="none"]');
             if (noneRadio) { noneRadio.checked = true; }
             var zeroRadio = document.querySelector('input[name="bedroom-count"][value="0"]');
